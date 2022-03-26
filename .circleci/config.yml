@@ -11,8 +11,8 @@ executors:
     docker:
       — image: circleci/buildpack-deps:stretch
         auth:
-          username: $DOCKERHUB_USERNAME
-          password: $DOCKERHUB_PASSWORD
+          DOCKERHUB_USERNAME: $DOCKERHUB_USERNAME
+          DOCKERHUB_PASSWORD: $DOCKERHUB_PASSWORD
 
 
 
