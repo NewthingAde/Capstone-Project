@@ -5,15 +5,14 @@ version: 2.1
 
 
 executors:
- docker-publisher: 
- environment:
-  IMAGE_NAME: newthingade/capstone
- docker: # Each job requires specifying an executor
- # (either docker, macos, or machine), see
-    — image: circleci/buildpack-deps:stretch
- auth:
-  username: $DOCKERHUB_USERNAME
-  password: $DOCKERHUB_PASSWORD
+  docker-publisher: 
+    environment:
+      IMAGE_NAME: newthingade/capstone
+    docker:
+      — image: circleci/buildpack-deps:stretch
+      auth:
+        username: $DOCKERHUB_USERNAME
+        password: $DOCKERHUB_PASSWORD
 
 
 
@@ -62,7 +61,7 @@ jobs:
           command: docker build -t $IMAGE_NAME:latest .
           
   publish-latest:
-    executors: docker-publisher
+    executor: docker-publisher
     steps:
       - setup_remote_docker
       - run:
