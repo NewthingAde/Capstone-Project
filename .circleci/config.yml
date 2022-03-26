@@ -10,9 +10,9 @@ executors:
       IMAGE_NAME: newthingade/capstone
     docker:
       — image: circleci/buildpack-deps:stretch
-      auth:
-        username: $DOCKERHUB_USERNAME
-        password: $DOCKERHUB_PASSWORD
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
 
 
 
