@@ -1,10 +1,10 @@
 version: 2
+
 jobs:
   build:
     docker:
     # Use the same Docker base as the project
       - image: python:3.7.3-stretch
-    working_directory: ~/repo
     steps:
       - checkout
       # Download and cache dependencies
@@ -31,22 +31,41 @@ jobs:
           command: |
             source .devops-capstone/bin/activate
             make lint  
-  
 
+  build-docker: 
+    environment:
+      IMAGE_NAME: newthingade/capstone-project
+    docker:
+      - image: circleci/buildpack-deps:stretch
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Build Docker image
+          command: docker build -t $IMAGE_NAME:latest .
+          
+  publish-latest:
+    environment:
+      IMAGE_NAME: capstone
+    docker:
+      - image: circleci/buildpack-deps:stretch
+    steps:
+      - setup_remote_docker
+      - run:
+          name: Publish Docker Image to Docker Hub
+          command: |
+            echo "$DOCKERHUB_PASS" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
+            docker push $IMAGE_NAME:latest
 workflows:
-  default:
     jobs:
-      - init        
-      - docker/publish:
-          matrix:
-            parameters:
-              image: [$DOCKER_LOGIN/capstone]
-              path: .
-              deploy: [true]
-              # We publish two images with different version tags: 
-              # - numbered version
-              # - "latest"
-              # tag: ['$(<hello_app/VERSION.txt)-${CIRCLE_SHA1:0:7}', 'latest']
-              tag: ['$(<3.0)', 'latest']
-              update-description: [true]    
-          requires: [init]
+      - build
+      - build-docker:
+          filters:
+            branches:
+              only: main
+      - publish-latest:
+          requires:
+            - build-docker
+          filters:
+            branches:
+              only: main
