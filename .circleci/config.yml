@@ -57,8 +57,10 @@ jobs:
             echo "$DOCKERHUB_PASS" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
             docker push $IMAGE_NAME:latest
 workflows:
-    default:
+  default:
+  version: 2
     jobs:
+      
       - build
       - build-docker:
           filters:
