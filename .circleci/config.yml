@@ -58,10 +58,6 @@ jobs:
             docker push $IMAGE_NAME:latest
 workflows:
   default:
-<<<<<<< HEAD
-=======
-  version: 2
->>>>>>> 6325fac966246406a1140e838509dc9c43ec2599
     jobs:
       
       - build
