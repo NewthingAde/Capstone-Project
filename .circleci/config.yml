@@ -1,5 +1,9 @@
 version: 2.1
 
+orbs:
+  docker: circleci/docker@1.4.0
+
+
 jobs:
   build:
     docker:
@@ -44,6 +48,16 @@ jobs:
           name: Build Docker image
           command: docker build -t $IMAGE_NAME:latest .
           
+  
+  machine-job:
+    machine: true
+    steps:
+      - docker/check:
+          docker-username: DOCKERHUB_LOGIN  # DOCKER_LOGIN is the default value, if it exists, it automatically would be used.
+          docker-password: DOCKERHUB_PASSWORD  # DOCKER_PASSWORD is the default value
+      - docker/pull:
+          images: 'circleci/node:latest'
+
   publish-latest:
     environment:
       IMAGE_NAME: capstone
@@ -54,9 +68,14 @@ jobs:
       - run:
           name: Publish Docker Image to Docker Hub
           command: |
-            echo "$DOCKERHUB_PASS" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
+# echo "$DOCKERHUB_PASS" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
             docker build -t $IMAGE_NAME .
             docker push $IMAGE_NAME:latest
+
+
+
+
+
 workflows:
   default:
     jobs:
@@ -66,6 +85,10 @@ workflows:
           filters:
             branches:
               only: main
+      - machine-job:
+          context:
+            - build-env-vars
+            - docker-hub-creds
       - publish-latest:
           requires:
             - build-docker
