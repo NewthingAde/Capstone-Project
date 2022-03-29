@@ -13,4 +13,6 @@
     `docker tag capstone:latest newthingade/dockerhub:capstone-project`
     `docker push newthingade/dockerhub:capstone-project`
 8. create a circleci config file
-9.
+9. `kubectl create -f capstone.yml`
+10. `kubectl get pods`
+11. `kubectl get deployments`

@@ -23,7 +23,7 @@ test:
 lint:
 	
 	# This is linter for Dockerfiles
-	#./hadolint Dockerfile
+	./hadolint Dockerfile
 	pylint --disable=R,C,W1203,W1202 hello.py
 
 
