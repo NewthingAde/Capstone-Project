@@ -1,0 +1,37 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: capstone-project
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: capstone
+  template:
+    metadata:
+      labels:
+        app: capstone
+    spec:
+      containers:
+        - name: capstone
+          image: newthingade/capstone
+          ports:
+            - containerPort: 80
+
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: capstone-project
+spec:
+  selector:
+    app: capstone
+  ports:
+    - protocol: "TCP"
+      # Port accessible inside cluster
+      port: 8080
+      # Port to forward to inside the pod
+      targetPort: 30000
+  type: LoadBalancer
