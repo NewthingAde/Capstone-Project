@@ -1,4 +1,7 @@
 # Capstone-Project
+
+[![CircleCI](https://circleci.com/gh/NewthingAde/Capstone-Project/tree/main.svg?style=svg)](https://circleci.com/gh/NewthingAde/Capstone-Project/tree/main)
+
 1. create virtual environment
     `python3 -m venv ~/.devops-capstone`
 2. activate the virtual environment 
@@ -13,6 +16,9 @@
     `docker tag capstone:latest newthingade/dockerhub:capstone-project`
     `docker push newthingade/dockerhub:capstone-project`
 8. create a circleci config file
-9. `kubectl create -f capstone.yml`
-10. `kubectl get pods`
-11. `kubectl get deployments`
+9. create kubernetes deployemts
+    `kubectl create -f capstone.yml`
+10. Get the created pod
+     `kubectl get pods`
+11. Get deployment
+    `kubectl get deployments`
